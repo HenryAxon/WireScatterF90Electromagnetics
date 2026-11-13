@@ -12,15 +12,22 @@ std_lib - the standard fortran library which despite the name is not a native li
 
 pyplot-fortran : an analogue to pyplot from matplotlib as seen in python. This allows simple plotting capability without main core matplotlib features but enough to get the job done without having to use python externally, which was good enough for me. 
 
+## Prerequisites:
+1) A fortran compiler compatible with FORTRAN 1990, I reccomend gfortran: https://fortran-lang.org/learn/os_setup/install_gfortran/
+2) git version control language: https://git-scm.com/install/
+3) The Fortran package manager FPM: https://fpm.fortran-lang.org/install/index.html
+
 ## Building the Solver
 
 To install the solver on your device:
-1) install git in a manner suitable for your device/operating system.
-2) clone repository by typing/copy-pasting the following command into terminal:
+1) Install a FORTRAN language compiler compatible with FORTRAN90 the 1990 language standard of Fortran. I used (and reccomend) the gfortran compiler for this https://fortran-lang.org/learn/os_setup/install_gfortran/
+2) Install git in a manner suitable for your device/operating system.
+3) Install the fortran package manager application (fpm)
+4) clone repository by typing/copy-pasting the following command into terminal:
 git clone https://github.com/HenryAxon/momprojectfive.git
-3) cd into the repository with the proper file path
-4) run command in terminal: fpm build --flag "-ffree-line-length-none"
-5) To run the program type in terminal: fpm run --flag "-ffree-line-length-none"
+5) cd into the repository with the proper file path
+6) run command in terminal: fpm build --flag "-ffree-line-length-none"
+7) To run the program type in terminal: fpm run --flag "-ffree-line-length-none"
 
 The solver integreates the external libaries via the fortran package manager which should be installed to run this project. To build the project, because FORTRAN line length rules were not strictly followed, you must pass the line (fpm build --flag "-ffree-line-length-none") which allows the compiler to ignore the line length limit that F90 imposes automatically at 130 some odd lines. 
 
