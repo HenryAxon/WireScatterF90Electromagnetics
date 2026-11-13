@@ -1,4 +1,14 @@
 module subroutines
+
+! a module that contains all subroutines to perform the method of moments (MoM) on a wire scatterer. 
+! Includes linspace - rewritten from a stack exchange post, but linspace should be included via the 
+! LAPACK or std_lib FORTRAN libraries which are highly standard and are included in this project. 
+! Meshing is commented out, but may be useful eventually for generating meshes if this code is ever 
+! generalized in any way. 
+
+! Writenn in F90 (Fortran 1990) for gfortran compiler.
+
+
 ! use, intrinsic :: iso_fortran_env, only: dp => real64
 use stdlib_linalg, only: solve, det, eye !! using the standard fortran library to get a linear algebra solver and 
 ! gauss quadrature capabilities. build the library with CMAKE, ninja, fypp!!

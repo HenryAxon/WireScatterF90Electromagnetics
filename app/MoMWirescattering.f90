@@ -1,4 +1,13 @@
 program MoMWirescattering
+! An algorithm for solving the wire scattering problem via the method of moments (MoM). Written for use as part of 
+! ECE 541 at Colorado State university, and as such, is not especially user friendly. The ability to sweep lengths for 
+! computing monostatic RCS across different electrical lengths is included via commented out code. Easy to change 
+
+! Plotting options currently are to plot the current distribution along the wire induced by the incident electromagnetic
+! wave. Commented out is a routine to plot the monostatic RCS as a function of length via a python matplotlib wrapper.
+! good luck!
+
+! written in F90 (Fortran 1990) for gfortran compiler
     use stdlib_linalg, only: solve, det, eye
     use stdlib_quadrature, only: gauss_legendre
     use pyplot_module
