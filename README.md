@@ -1,4 +1,4 @@
-# momprojectfive
+# WireScatterF90Electromagnetics
 The FORTRAN f90 code to run my method of moments (MoM) wire scatterer of an electromagnetic plane wave simulation. The code contains two main files:
 MoMWireScattering.f90 - the main file containting references to the FORTRAN std_lib, a dependency, as well as calling all subroutines needed to perform the method of moments and solve for the surface current sources, and compute the radar cross section (RCS) of a cylindrical wire. 
 
