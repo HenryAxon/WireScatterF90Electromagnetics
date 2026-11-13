@@ -17,7 +17,7 @@ pyplot-fortran : an analogue to pyplot from matplotlib as seen in python. This a
 To install the solver on your device:
 1) install git in a manner suitable for your device/operating system.
 2) clone repository by typing/copy-pasting the following command into terminal:
-git clone https repository link](https://github.com/HenryAxon/momprojectfive.git
+git clone https://github.com/HenryAxon/momprojectfive.git
 3) cd into the repository with the proper file path
 4) run command in terminal: fpm build --flag "-ffree-line-length-none"
 5) To run the program type in terminal: fpm run --flag "-ffree-line-length-none"
