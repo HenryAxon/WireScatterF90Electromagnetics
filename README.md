@@ -14,6 +14,14 @@ pyplot-fortran : an analogue to pyplot from matplotlib as seen in python. This a
 
 ## Building the Solver
 
+To install the solver on your device:
+1) install git in a manner suitable for your device/operating system.
+2) clone repository by typing/copy-pasting the following command into terminal:
+git clone https repository link](https://github.com/HenryAxon/momprojectfive.git
+3) cd into the repository with the proper file path
+4) run command in terminal: fpm build --flag "-ffree-line-length-none"
+5) To run the program type in terminal: fpm run --flag "-ffree-line-length-none"
+
 The solver integreates the external libaries via the fortran package manager which should be installed to run this project. To build the project, because FORTRAN line length rules were not strictly followed, you must pass the line (fpm build --flag "-ffree-line-length-none") which allows the compiler to ignore the line length limit that F90 imposes automatically at 130 some odd lines. 
 
 To run the solver you must then again write (fpm run --flag "-ffree-line-length-none"), which should work just fine if the code compiled properly.
