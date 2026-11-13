@@ -1,0 +1,10 @@
+name = "momprojectfive"
+version = "0.1.0"
+license = "license"
+author = "HenryAxon"
+maintainer = "153237565+HenryAxon@users.noreply.github.com"
+copyright = "Copyright 2026, HenryAxon"
+
+[dependencies]
+stdlib = "*"
+pyplot-fortran = { git="https://github.com/jacobwilliams/pyplot-fortran.git" }
