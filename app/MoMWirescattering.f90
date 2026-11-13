@@ -5,7 +5,7 @@ program MoMWirescattering
 
 ! Plotting options currently are to plot the current distribution along the wire induced by the incident electromagnetic
 ! wave. Commented out is a routine to plot the monostatic RCS as a function of length via a python matplotlib wrapper.
-! good luck!
+! good luck! gitignore should work now
 
 ! written in F90 (Fortran 1990) for gfortran compiler
     use stdlib_linalg, only: solve, det, eye
