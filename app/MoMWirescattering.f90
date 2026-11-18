@@ -42,10 +42,10 @@ program MoMWirescattering
     real(8) :: zplot(Nz)
     complex(8) :: Iplot(Nz)
     
-    !real(8) ::  L(100) 
+    real(8) ::  L(100) 
 
-    !complex(8) :: RCS(100)
-    complex(8) :: RCS
+    complex(8) :: RCS(100)
+    !complex(8) :: RCS
     complex(8) :: current(Nsubs)
     complex(8) :: Q
     call linspace(0.25D0, 2.0D0, L)
