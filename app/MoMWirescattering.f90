@@ -60,11 +60,11 @@ program MoMWirescattering
         !d = L/ (Nsubs + 1)
         d = L(i) / (Nsubs + 1)
         
-        !call excitationVec(e0, incidentAngle, beta, Nsubs, L(i),excitationIn)
-        call excitationVec(e0, incidentAngle, beta, Nsubs, L,excitationIn)
+        call excitationVec(e0, incidentAngle, beta, Nsubs, L(i),excitationIn)
+        !call excitationVec(e0, incidentAngle, beta, Nsubs, L,excitationIn)
         
-        !call fillZ(L(i), Nsubs, beta,a,f, zMatIn)
-        call fillZ(L, Nsubs, beta,a,f, zMatIn)
+        call fillZ(L(i), Nsubs, beta,a,f, zMatIn)
+        !call fillZ(L, Nsubs, beta,a,f, zMatIn)
         
         call solveSystem(excitationIn, zMatIn, coeffresult)
         
@@ -72,8 +72,8 @@ program MoMWirescattering
 
         call QCompute(Nsubs,d,Iplot,beta,incidentAngle, Q)
 
-        !call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS(i))
-        call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS)
+        call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS(i))
+        !call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS)
             
         ! call plt%initialize(grid=.true.,xlabel='Z (m)',ylabel='I(z) Amps', title='Plot of Surface Currents on Wire Scatterer with Theta = 30',legend=.true.)
         ! call plt%add_plot(zplot,abs(Iplot),label='ABS(Currents)',linestyle='b--o',markersize=5,linewidth=2)
