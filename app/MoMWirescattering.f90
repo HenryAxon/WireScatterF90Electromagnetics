@@ -53,7 +53,7 @@ program MoMWirescattering
     
     do i = 1, 100
         a = L(i) / 160
-        call linspace(0.0D0, L, zplot)
+        call linspace(0.0D0, L(i), zplot)
         
 
         !call meshing(Nsubs, L, a, mesh, d)
