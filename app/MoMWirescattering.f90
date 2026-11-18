@@ -13,23 +13,24 @@ program MoMWirescattering
     use pyplot_module
     use subroutines 
     use pyplot_module, only: pyplot, wp => pyplot_wp
+    use fplot
 
     implicit none
     type(pyplot) :: plt
     
     integer, parameter :: Nsubs = 100
-    real(8), parameter :: L = 2
+    !real(8), parameter :: L = 2
     real(8) :: a 
     !real(8), allocatable :: mesh(,:)
     real(8) :: d 
-    real(8), parameter :: f = 300D6
+    real(8), parameter :: f = 200D6
     real(8), parameter :: c = 299792458
     real(8), parameter :: pi = DACOS(-1.D0)
     real(8), parameter :: mu = (4 * pi) * 1.0D-7
     real(8), parameter :: eps = 8.8541878188D-12
     real(8), parameter:: e0 = 1
     real(8), parameter :: beta = 2* pi * f/c
-    real(8), parameter :: incidentAngle = 5*pi/12
+    real(8), parameter :: incidentAngle = pi/6
     real(8), parameter :: omega = 2 * pi * f
     real(8) :: z(Nsubs)
     complex(8) :: In(Nsubs)
@@ -42,22 +43,22 @@ program MoMWirescattering
     complex(8) :: Iplot(Nz)
     
     !real(8) ::  L(100) 
-   
+
     !complex(8) :: RCS(100)
     complex(8) :: RCS
     complex(8) :: current(Nsubs)
     complex(8) :: Q
-    !call linspace(0.25D0, 2.0D0, L)
-    a = 12.5D-3
+    call linspace(0.25D0, 2.0D0, L)
+    !a = 12.5D-3
     
-    !do i = 1, 100
-        !a = L(i) / 160
+    do i = 1, 100
+        a = L(i) / 160
         call linspace(0.0D0, L, zplot)
         
 
         !call meshing(Nsubs, L, a, mesh, d)
-        d = L/ (Nsubs + 1)
-        !d = L(i) / (Nsubs + 1)
+        !d = L/ (Nsubs + 1)
+        d = L(i) / (Nsubs + 1)
         
         !call excitationVec(e0, incidentAngle, beta, Nsubs, L(i),excitationIn)
         call excitationVec(e0, incidentAngle, beta, Nsubs, L,excitationIn)
@@ -74,15 +75,18 @@ program MoMWirescattering
         !call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS(i))
         call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS)
             
-        call plt%initialize(grid=.true.,xlabel='Z (m)',ylabel='I(z) Amps', title='Plot of Surface Currents on Wire Scatterer with Theta = 30',legend=.true.)
-        call plt%add_plot(zplot,real(Iplot),label='Currents',linestyle='b-o',markersize=5,linewidth=2)
-        call plt%savefig('currents75_fixed_zmat.png', pyfile='currents75_fixed_zmat.py')
+        ! call plt%initialize(grid=.true.,xlabel='Z (m)',ylabel='I(z) Amps', title='Plot of Surface Currents on Wire Scatterer with Theta = 30',legend=.true.)
+        ! call plt%add_plot(zplot,abs(Iplot),label='ABS(Currents)',linestyle='b--o',markersize=5,linewidth=2)
+        ! call plt%add_plot(zplot,real(Iplot),label='RE(Currents)',linestyle='r-*',markersize=5,linewidth=2)
+        ! call plt%add_plot(zplot,aimag(Iplot),label='IM(Currents)',linestyle='g-s',markersize=5,linewidth=2)
+        ! call plt%add_str('plt.tight_layout()')
+        ! call plt%savefig('currents30_mag_imag_real.png', pyfile='currents30_fixed_mag_imag.py')
 
-    !end do
+    end do
 
-    !call plt%initialize(grid=.true.,xlabel='Length (m)',ylabel='RCS', title='Plot of Radar Cross Section with Theta = 90',legend=.true.)
-    !call plt%add_plot(L, abs(RCS),label='Radar Cross Section',linestyle='b-o',markersize=5,linewidth=2)
-    !call plt%savefig('RCSsweepnodb_correctedzmat.png', pyfile='RCSsweepnodb_correctedzmat.py')
+    call plt%initialize(grid=.true.,xlabel='Length (m)',ylabel='RCS (m^2)', title='Plot of Radar Cross Section with Theta = 90, f=200 MHz',legend=.true.)
+    call plt%add_plot(L, abs(RCS),label='Radar Cross Section',linestyle='b-o',markersize=5,linewidth=2)
+    call plt%savefig('RCSsweepnodb_correctedzmat_200Mhz.png', pyfile='RCSsweepnodb_correctedzmat_200MHz.py')
     
     
     
