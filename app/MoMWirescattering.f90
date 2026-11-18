@@ -13,7 +13,7 @@ program MoMWirescattering
     use pyplot_module
     use subroutines 
     use pyplot_module, only: pyplot, wp => pyplot_wp
-    use fplot
+    !use fplot
 
     implicit none
     type(pyplot) :: plt

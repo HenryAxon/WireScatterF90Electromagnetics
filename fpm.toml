@@ -8,4 +8,3 @@ copyright = "Copyright 2026, HenryAxon"
 [dependencies]
 stdlib = "*"
 pyplot-fortran = { git="https://github.com/jacobwilliams/pyplot-fortran.git" }
-fplot = {git = "https://github.com/jchristopherson/fplot.git"}
