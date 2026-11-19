@@ -17,6 +17,8 @@ use pyplot_module, only: pyplot, wp => pyplot_wp
 contains 
 
     subroutine linspace(from, to, array)
+    ! linspce routine based on post on stack-exchange, std_lib technically also has this capability
+    ! whcih I did not know at the time!
         implicit none
         ! we define the inputs, outputs, their types, as well as all other
         ! needed variables
