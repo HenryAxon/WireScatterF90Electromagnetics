@@ -36,7 +36,7 @@ To run the solver you must then again write (fpm run --flag "-ffree-line-length-
 ## Simulation Options:
 Locate the line called "simulationFlag" in the main MoMWirescattering.f90 file. This selects the type of simulation to be ran and what type of plot will be generated and saved. Because of the fact that I used a pyplot based fortran plotting library it generates a python script to plot the results, which also offers handy debugging options as it lists the currents automatically as arrays. 
 
-simFlag == 1: this is a simulation that will run an RCS sweep across length
+simFlag == 1: this is a simulation that will run an Radar Cross Section (RCS) sweep across length
 simFlag == 2: this is a simulation that will run a simple current computation and phase plot at whatever incident angle you input.
 sadly you do need to manually change the plot titles, axes and file names at this time. Maybe will fix later, maybe not!
 simFlag == 3: Runs the convergence of current simulation with a reference simulation of 1000 segments. Shows the convergence as function of N
