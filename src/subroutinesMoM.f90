@@ -141,7 +141,7 @@ contains
         real(8), intent(in) :: a
         real(8), intent(in) :: beta
         integer :: i
-        integer, parameter :: k = 5
+        integer, parameter :: k = 20
         real(8) :: x(k), w(k) ! pre-defining the gauss weigths and nodes
         complex(8), intent(out) :: integralOne
         
@@ -159,7 +159,7 @@ contains
         if (m == n) then
             ! perform quadrature integration from -d to d on the z axis
             
-            analyticalPart =  2 * cos(beta * a) * LOG((d + SQRT(d**2 + a**2)) / a)
+            analyticalPart =  2 * cos(beta * a) * (LOG((d + SQRT(d**2 + a**2)) / a) - (sqrt(d**2 + a**2) - a)/d )
             call gauss_legendre(x, w, [0.0d0, d])
             RMequalN = sqrt(x ** 2 + a**2)
             numericalMequalN = 2*sum(w * (1 - x/d) * ((exp(-comp * beta * RMequalN))/RMequalN - cos(beta*a)/RMequalN))
@@ -175,7 +175,7 @@ contains
             return
         end if
         
-       
+
     end subroutine sciOne 
     
     subroutine sciTwo(m,n, d, a, Nsub,beta, integralTwo)
@@ -367,7 +367,7 @@ contains
     end subroutine solveSystem
     
     
-    subroutine currents(Nsub, d,coefficients,zeval, In)
+    subroutine currents(Nsub, d,coefficients,zeval, curr)
         ! compute the currents from the resulting coefficients        
         ! Params: 
         ! N - the number of subdivisions
@@ -380,19 +380,19 @@ contains
         real(8), intent(in) :: d
         complex(8), intent(in) :: coefficients(:)
         real(8), intent(in) :: zeval(:)
-        complex(8), intent(out) :: In(size(zeval))
+        complex(8), intent(out) :: curr(size(zeval))
         
         integer :: i
         integer :: n
         real(8) :: zn
         real(8) :: Tz
-        In = (0.0D0, 0.0D0)
+        curr = (0.0D0, 0.0D0)
 
         do i = 1, size(zeval)
             do n = 1, Nsub
                 zn = n * d
                 call rooftopBasis(zeval(i), zn, d, Tz)
-                In(i) = In(i) + coefficients(n) * Tz
+                curr(i) = curr(i) + coefficients(n) * Tz
             end do
         end do
         
@@ -462,5 +462,7 @@ contains
         RCS = (omega * mu * sin(theta)* ABS(Q)) ** 2 / (4 * pi * E0 **2)
 
     end subroutine radarCrossSection
+
+    
         
 end module subroutines

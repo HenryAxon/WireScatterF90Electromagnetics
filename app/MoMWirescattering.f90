@@ -18,7 +18,7 @@ program MoMWirescattering
     implicit none
     type(pyplot) :: plt
     
-    integer, parameter :: Nsubs = 100
+    integer, parameter :: Nsubs = 300
     !real(8), parameter :: L = 2
     real(8) :: a 
     !real(8), allocatable :: mesh(,:)
@@ -28,16 +28,17 @@ program MoMWirescattering
     
 
 
-    real(8), parameter :: f = 200D6
+    real(8), parameter :: f = 300D6
     real(8), parameter :: c = 299792458
     real(8), parameter :: pi = DACOS(-1.D0)
     real(8), parameter :: mu = (4 * pi) * 1.0D-7
     real(8), parameter :: eps = 8.8541878188D-12
     real(8), parameter:: e0 = 1
     real(8), parameter :: beta = 2* pi * f/c
-    real(8), parameter :: incidentAngle = pi/2
+    real(8), parameter :: incidentAngle = pi/6
     real(8), parameter :: omega = 2 * pi * f
     real(8) :: z(Nsubs)
+    real(8) :: phase(Nsubs+2)
     !complex(8) :: In(Nsubs)
     complex(8),allocatable :: excitationIn(:)
     complex(8), allocatable :: zMatIn(:,: ) ! main difficulty with Fortran - allocatables and recognizing that I cannot define things later 
@@ -69,7 +70,8 @@ program MoMWirescattering
     integer :: simFlag
     real(8) :: zplotdense(denseSolnN+2)
 
-    simFlag = 3
+    simFlag = 2
+
     if (simFlag == 1) then ! branch of script for sweeping L and computing RCS
         allocate(excitationIn(Nsubs))
         allocate(zMatIn(Nsubs, Nsubs))
@@ -79,7 +81,7 @@ program MoMWirescattering
         call linspace(0.25D0, 2.0D0, L)
         
     !complex(8) :: RCS
-        call linspace(0.25D0, 2.0D0, L)
+        !call linspace(0.25D0, 2.0D0, L)
     !a = 12.5D-3
     
         do i = 1, 100
@@ -124,14 +126,17 @@ program MoMWirescattering
         allocate(zMatIn(Nsubs,Nsubs))
         allocate(zplot(Nsubs+2))
         allocate(Iplot(Nsubs+2))
+        allocate(coeffresult(Nsubs))
         !complex(8) :: RCS
         Lsingle = 2
         asingle = 12.5D-3
         d = Lsingle/ (Nsubs + 1)
+        call linspace(0.0D0, Lsingle, zplot)
+
         call excitationVec(e0, incidentAngle, beta, Nsubs, Lsingle,excitationIn)
 
 
-        call fillZ(Lsingle, Nsubs, beta,a,f, zMatIn)
+        call fillZ(Lsingle, Nsubs, beta,asingle,f, zMatIn)
 
         call solveSystem(excitationIn, zMatIn, coeffresult)
 
@@ -140,28 +145,38 @@ program MoMWirescattering
         !call QCompute(Nsubs,d,Iplot,beta,incidentAngle, Q)
 
         !call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS)
-            
-
+        ! adding a plotting sequence for phase -    
+        phase = atan2(real(Iplot), aimag(Iplot)) ! I think this one line is all i need.
         
-            ! plotting with the adapted matplotlib fortran library
-        call plt%initialize(grid=.true.,xlabel='Z (m)',ylabel='I(z) Amps', title='Plot of Surface Currents on Wire Scatterer with Theta = 30',legend=.true.)
+            ! plotting with the adapted matplotlib fortran library - currents
+        call plt%initialize(grid=.true.,xlabel='Z (m)',ylabel='I(z) Amps', title='Plot of Surface Currents on Wire Scatterer with Theta = 75',legend=.true.)
         call plt%add_plot(zplot,abs(Iplot),label='ABS(Currents)',linestyle='b--o',markersize=5,linewidth=2)
         call plt%add_plot(zplot,real(Iplot),label='RE(Currents)',linestyle='r-*',markersize=5,linewidth=2)
         call plt%add_plot(zplot,aimag(Iplot),label='IM(Currents)',linestyle='g-s',markersize=5,linewidth=2)
         call plt%add_str('plt.tight_layout()')
-        call plt%savefig('currents30_mag_imag_real.png', pyfile='currents30_fixed_mag_imag.py')
+        call plt%savefig('currents75_mag_imag_real_new.png', pyfile='currents75_fixed_mag_imag_real_new.py')
+        
+
+                    ! plotting with the adapted matplotlib fortran library - phase
+        call plt%initialize(grid=.true.,xlabel='Z (m)',ylabel='Phase (Degress)', title='Surface Current Phasing Along Wire, Theta = 30',legend=.true.)
+        call plt%add_plot(zplot,phase,label='ABS(Currents)',linestyle='b--o',markersize=5,linewidth=2)
+
+        call plt%add_str('plt.tight_layout()')
+        call plt%savefig('Phase30.png', pyfile='Phase30.py')
         deallocate(zmatin, excitationin, Iplot, coeffresult)
+
+
         return
     else
             ! must do dense solve OUTSIDE the loop
         Lsingle = 2.0D0
-        a = 12.5D-3
+        asingle = 12.5D-3
         d = Lsingle/ (denseSolnN + 1)
         call linspace(0.0D0, Lsingle, zplotdense)
         call excitationVec(e0, incidentAngle, beta, denseSolnN, Lsingle, exciteDense)
 
 
-        call fillZ(Lsingle, denseSolnN, beta,a,f, zmatdense)
+        call fillZ(Lsingle, denseSolnN, beta,asingle,f, zmatdense)
 
         call solveSystem(exciteDense, zmatdense, currentcoeffdense)
 
