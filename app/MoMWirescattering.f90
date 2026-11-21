@@ -35,7 +35,7 @@ program MoMWirescattering
     real(8), parameter :: eps = 8.8541878188D-12
     real(8), parameter:: e0 = 1
     real(8), parameter :: beta = 2* pi * f/c
-    real(8), parameter :: incidentAngle = pi/6
+    real(8), parameter :: incidentAngle = pi/2
     real(8), parameter :: omega = 2 * pi * f
     real(8) :: z(Nsubs)
     real(8) :: phase(Nsubs+2)
@@ -70,7 +70,7 @@ program MoMWirescattering
     integer :: simFlag
     real(8) :: zplotdense(denseSolnN+2)
 
-    simFlag = 2
+    simFlag = 1
 
     if (simFlag == 1) then ! branch of script for sweeping L and computing RCS
         allocate(excitationIn(Nsubs))
@@ -117,10 +117,11 @@ program MoMWirescattering
 
         end do
 
-        call plt%initialize(grid=.true.,xlabel='Length (m)',ylabel='RCS (m^2)', title='Plot of Radar Cross Section with Theta = 90, f=200 MHz',legend=.true.)
+        call plt%initialize(grid=.true.,xlabel='Length (m)',ylabel='RCS (m^2)', title='Plot of Radar Cross Section with Theta = 90, f=300 MHz',legend=.true.)
         call plt%add_plot(L, abs(RCS),label='Radar Cross Section',linestyle='b-o',markersize=5,linewidth=2)
-        call plt%savefig('RCSsweepnodb_correctedzmat_200Mhz.png', pyfile='RCSsweepnodb_correctedzmat_200MHz.py')
+        call plt%savefig('RCSsweepnodb_correctedzmattheta90_300Mhz.png', pyfile='RCSsweepnodb_correctedzmat_theta90300MHz.py')
         deallocate(excitationIn,zMatIn,coeffresult,zplot,Iplot)
+        return
     else if (simFlag == 2) then
         allocate(excitationin(Nsubs))
         allocate(zMatIn(Nsubs,Nsubs))
@@ -146,7 +147,7 @@ program MoMWirescattering
 
         !call radarCrossSection(Nsubs,d,Q,E0,incidentAngle, mu, omega,pi, RCS)
         ! adding a plotting sequence for phase -    
-        phase = atan2(real(Iplot), aimag(Iplot)) ! I think this one line is all i need.
+        phase = atan2(real(Iplot), aimag(Iplot)) * 180.0d0 / pi! I think this one line is all i need.
         
             ! plotting with the adapted matplotlib fortran library - currents
         call plt%initialize(grid=.true.,xlabel='Z (m)',ylabel='I(z) Amps', title='Plot of Surface Currents on Wire Scatterer with Theta = 75',legend=.true.)
@@ -186,6 +187,7 @@ program MoMWirescattering
         ListofN = [5,11,21,31,51,61,101,151,201,301] ! must use odd numbers to get a center properly
 
         do  x = 1, numNs
+            
             !allocate(currents_midpoint_residuals(ListOfN(x)))
             !allocate(In(ListOfN(x)))
             !allocate(z(ListOfN(x)))
@@ -195,6 +197,7 @@ program MoMWirescattering
             Nzres = ListofN(x) + 2
             allocate(zplot(Nzres))
             allocate(Iplot(Nzres))
+            
 
 
             
@@ -209,7 +212,7 @@ program MoMWirescattering
             call excitationVec(e0, incidentAngle, beta, ListofN(x), Lsingle,excitationIn)
 
 
-            call fillZ(Lsingle, ListofN(x), beta,a,f, zMatIn)
+            call fillZ(Lsingle, ListofN(x), beta,asingle,f, zMatIn)
 
             call solveSystem(excitationIn, zMatIn, coeffresult)
 
@@ -236,6 +239,7 @@ program MoMWirescattering
         call plt%add_str('plt.tight_layout()')
         call plt%savefig('currentconvergence.png', pyfile='currentconvergence.py')
         return
+        
 
     end if
 
